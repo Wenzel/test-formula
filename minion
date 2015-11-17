@@ -1,12 +1,8 @@
-file_roots:
-  base:
-    - /srv/salt
-
 fileserver_backend:
   - root
   - git
 
 gitfs_remotes:
-  - file:///git
+  - https://github.com/saltstack-formulas/openvpn-formula.git
 
 gitfs_provider: gitpython
