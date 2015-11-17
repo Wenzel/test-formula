@@ -1,0 +1,139 @@
+# See https://openvpn.net/index.php/open-source/documentation/howto.html#examples
+# for configuration details
+# Important: Replace all '-' in names on left side with '_'!
+
+# Defaults can be overwritten, see openvpn/map.jinja for default values
+# openvpn:
+#   lookup:
+#     dh_files: ['4096'] # This creates a dh file with 4096 bits.
+
+openvpn:
+  server:
+    myserver1:
+      ca: /path/to/mycacert.pem
+      cert: /path/to/mycert.pem
+      key: /path/to/mykey.pem
+      server: '10.8.0.0 255.255.255.0'
+    myserver2:
+      local: 10.4.0.1
+      port: 1194
+      proto: udp
+      topology: subnet
+      dev: tun
+      dev_node:
+      ca: /path/to/mycacert.pem
+      ca_content: |
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+      cert: /path/to/mycert.pem
+      cert_content: |
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+      key: /path/to/mykey.pem
+      key_content: |
+        -----BEGIN PRIVATE KEY-----
+        ...
+        -----END PRIVATE KEY-----
+      dh: dh1024.pem
+      server: '10.8.0.0 255.255.255.0'
+      ifconfig_pool_persist: ipp.txt
+      server_bridge:
+      push:
+        - "route 192.168.10.0 255.255.255.0"
+      route:
+        - "192.168.11.0 255.255.255.0"
+      client_config_dir: clients
+      client_config:
+        client1: |
+          iroute 192.168.10.0 255.255.255.0
+      learn_address:
+      client_to_client: False
+      duplicate_cn: False
+      keepalive: '10 120'
+      tls_auth: /path/to/tls.key 0
+      ta_content: |
+        -----BEGIN OpenVPN Static key V1-----
+        ...
+        -----END OpenVPN Static key V1-----
+      ciphers:
+        - BF-CBC
+        - AES-128-CBC
+      comp_lzo:
+      max_clients: 100
+      user: nobody
+      group: nobody
+      tun_mtu: 1350
+      persist_key:
+      persist_tun:
+      status: openvpn-status.log
+      log: openvpn.log
+      log_append: openvpn.log
+      verb: 3
+      mute: 20
+    myserver3:
+      daemon:
+      port: 443
+      port_share: '127.0.0.1 4430'
+      ccd_exclusive:
+      auth: SHA1
+      username_as_common_name:
+      plugins:
+        - '/usr/lib/openvpn/radiusplugin.so /etc/openvpn/radiusplugin.cnf'
+  client:
+    myclient1:
+      remote:
+        - 'my-server-1 1194'
+      ca: /path/to/mycacert.pem
+      cert: /path/to/mycert.pem
+      key: /path/to/mykey.pem
+    myclient2:
+      client:
+      dev: tun
+      dev_node:
+      proto: udp
+      remote:
+        - 'my-server-1 1194'
+        - 'my-server-2 1194'
+      remote_random:
+      resolv_retry infinite:
+      nobind:
+      user: nobody
+      group: nobody
+      persist_key:
+      persist_tun:
+      http_proxy_retry:
+      http_proxy: 'proxy-server proxy-port'
+      mute_replay_warnings:
+      ca: /path/to/mycacert.pem
+      ca_content: |
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+      cert: /path/to/mycert.pem
+      cert_content: |
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+      key: /path/to/mykey.pem
+      key_content: |
+        -----BEGIN PRIVATE KEY-----
+        ...
+        -----END PRIVATE KEY-----
+      ns_cert_type: server
+      tls_auth: /path/to/tls.key 0
+      ta_content: |
+        -----BEGIN OpenVPN Static key V1-----
+        ...
+        -----END OpenVPN Static key V1-----
+      ciphers:
+        - BF-CBC
+        - AES-128-CBC
+      comp_lzo:
+      verb: 3
+      mute: 20
+  ifconfig_pool_persist:
+    ipp.txt:
+      somehostname: 192.168.51.2
+      secondhost: 192.168.51.3

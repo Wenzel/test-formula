@@ -1,0 +1,12 @@
+file_roots:
+  base:
+    - /srv/salt
+
+fileserver_backend:
+  - root
+  - git
+
+gitfs_remotes:
+  - file:///git
+
+gitfs_provider: gitpython
