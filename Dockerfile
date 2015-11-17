@@ -8,5 +8,4 @@ WORKDIR /root/
 VOLUME ['/srv/pillar']
 VOLUME ['/srv/salt']
 VOLUME ['/etc/salt/minion']
-VOLUME ['/git']
 CMD ["/usr/bin/salt-call", "--local", "-l", "all", "state.highstate"]
